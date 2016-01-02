@@ -1,4 +1,10 @@
+/** This file is part of the ConnectorDB project.
 
+Copyright 2016 the ConnectorDB contributors, see AUTHORS for a list of
+contributors.
+
+Licensed under the MIT license.
+**/
 "use strict";
 
 function ConnectorDB(device, apikey, url) {
@@ -7,7 +13,7 @@ function ConnectorDB(device, apikey, url) {
     this.url = url + "/api/v1/"
 
     this.device = device;
-    
+
     this.authHeader = "Basic " + btoa(device + ":" + apikey);
 
 }
@@ -30,6 +36,7 @@ ConnectorDB.prototype = {
 
         return new Promise(function(resolve, reject) {
             var req = new XMLHttpRequest();
+            //req.withCredentials = true;
 
             // type, url, async, basicauth credentials
             req.open(reqtype, url, true);
@@ -189,4 +196,111 @@ ConnectorDB.prototype = {
         var path = this._getPath(username, devicename, streamname) + "/data?t1=" + t1 + "&t2=" + t2 + "&limit=" + limit;
         return this._doRequest(path, "GET");
     },
+
+    // Gets a list of available transforms on the system.
+    getTransforms: function() {
+        return this._doRequest("meta/transforms", "GET")
+    },
+
+    // Gets a list of available transforms on the system.
+    getInterpolators: function() {
+        return this._doRequest("meta/interpolators", "GET")
+    },
+
+    query: function() {
+
+    }
+
+    merge: function(user, device, stream) {
+
+        return new StreamQuery(this, user, device, stream);
+    }
 };
+
+/**
+The steramquery can be used to run a query on a single stream in the following
+manner:
+
+sq = new StreamQuery(cdb, "foo", "bar", "baz")
+                .betweenIndex(0, 1000)
+                .transform("average")
+                .run()
+
+this would query the first 1000 datapoints in foo/bar/baz and average them.
+
+**/
+function StreamQuery(connectordb, user, device, stream) {
+    this.connectordb = connectordb;
+    this.user = user;
+    this.device = device;
+    this.stream = stream;
+    this.internal = {};
+    this.internal["stream"] = user + "/" + device + "/" + stream;
+}
+
+
+
+StreamQuery.prototype = {
+    run: function() {
+        return this.connectordb._doRequest(this.user, this.device, this.stream, this.internal);
+    },
+
+    betweenTime: function (start, end) {
+        // Set the start and end times
+        this.internal["t1"] = start;
+        this.internal["t2"] = end;
+
+        // Remove indicies since we need one or the other
+        this.internal.delete("i1");
+        this.internal.delete("i2");
+        return this;
+    },
+
+    betweenIndex: function(start, end) {
+        this.internal["i1"] = start;
+        this.internal["i2"] = end;
+
+        // Remove times since we need one or the other
+        this.internal.delete("t1");
+        this.internal.delete("t2");
+
+        return this;
+    },
+
+    // Limits the number of datapoints returned to the given amount
+    // -1 for unlimited
+    limit: function(numberOfDatapoints) {
+        this.internal.delete("limit");
+
+        if (numberOfDatapoints > 0) {
+            this.internal["limit"] = numberOfDatapoints;
+        }
+
+        return this;
+    },
+
+    // Sets the transform for this query, use "" to unset a transform.
+    transform: function(transform) {
+        this.internal.delete("transform");
+
+        if(transform != "") {
+            this.internal["transform"] = transform;
+        }
+
+        return this;
+    },
+};
+
+/**
+
+type DatasetQuery struct {
+	StreamQuery                                   //This is used for Ydatasets - setting the Stream variable will make it a Ydataset - it also holds the range
+	Merge         []*StreamQuery                  `json:"merge,omitempty"`      //optional merge for Ydatasets
+	Dt            float64                         `json:"dt,omitempty"`         //Used for TDatasets - setting this variable makes it a time based query
+	Dataset       map[string]*DatasetQueryElement `json:"dataset"`              //The dataset to generate
+	PostTransform string                          `json:"itransform,omitempty"` //The transform to run on the full datapoint after the dataset element is created
+}
+
+
+ConnectorDB.prototype = {
+**/
