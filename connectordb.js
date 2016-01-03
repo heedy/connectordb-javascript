@@ -207,15 +207,36 @@ ConnectorDB.prototype = {
         return this._doRequest("meta/interpolators", "GET")
     },
 
-    query: function() {
-
-    }
-
     merge: function(user, device, stream) {
 
-        return new StreamQuery(this, user, device, stream);
+        return new Merge(this);
     }
 };
+
+/** A merge request combines one or several streams together into one.
+You can also perform powerful queries using pipescript.
+**/
+function Merge(connectordb) {
+    this.connectordb = connectordb
+    this.streams = []
+}
+
+Merge.prototype = {
+    run: function() {
+        console.log(JSON.stringify(this.streams));
+        return this.connectordb._doRequest("query/merge", "POST", this.streams);
+    },
+
+    // Adds a stream to be merged and returns it so it can be initialized
+    addStream: function(user, device, stream) {
+        var sq = new StreamQuery(user, device, stream);
+
+        this.streams.push(sq);
+
+        return sq;
+    },
+};
+
 
 /**
 The steramquery can be used to run a query on a single stream in the following
@@ -223,46 +244,36 @@ manner:
 
 sq = new StreamQuery(cdb, "foo", "bar", "baz")
                 .betweenIndex(0, 1000)
-                .transform("average")
-                .run()
+                .transform("average");
 
 this would query the first 1000 datapoints in foo/bar/baz and average them.
 
 **/
-function StreamQuery(connectordb, user, device, stream) {
-    this.connectordb = connectordb;
-    this.user = user;
-    this.device = device;
-    this.stream = stream;
-    this.internal = {};
-    this.internal["stream"] = user + "/" + device + "/" + stream;
+function StreamQuery(user, device, stream) {
+    this["stream"] = user + "/" + device + "/" + stream;
 }
 
-
-
 StreamQuery.prototype = {
-    run: function() {
-        return this.connectordb._doRequest(this.user, this.device, this.stream, this.internal);
-    },
 
     betweenTime: function (start, end) {
         // Set the start and end times
-        this.internal["t1"] = start;
-        this.internal["t2"] = end;
+        this["t1"] = start;
+        this["t2"] = end;
 
         // Remove indicies since we need one or the other
-        this.internal.delete("i1");
-        this.internal.delete("i2");
+        delete this["i1"];
+        delete this["i2"];
+
         return this;
     },
 
     betweenIndex: function(start, end) {
-        this.internal["i1"] = start;
-        this.internal["i2"] = end;
+        this["i1"] = start;
+        this["i2"] = end;
 
         // Remove times since we need one or the other
-        this.internal.delete("t1");
-        this.internal.delete("t2");
+        delete this["t1"];
+        delete this["t2"];
 
         return this;
     },
@@ -270,10 +281,10 @@ StreamQuery.prototype = {
     // Limits the number of datapoints returned to the given amount
     // -1 for unlimited
     limit: function(numberOfDatapoints) {
-        this.internal.delete("limit");
+        delete this["limit"];
 
         if (numberOfDatapoints > 0) {
-            this.internal["limit"] = numberOfDatapoints;
+            this["limit"] = numberOfDatapoints;
         }
 
         return this;
@@ -281,10 +292,10 @@ StreamQuery.prototype = {
 
     // Sets the transform for this query, use "" to unset a transform.
     transform: function(transform) {
-        this.internal.delete("transform");
+        delete this["transform"];
 
         if(transform != "") {
-            this.internal["transform"] = transform;
+            this["transform"] = transform;
         }
 
         return this;

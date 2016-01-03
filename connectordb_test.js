@@ -151,6 +151,23 @@ describe("ConnectorDB admin user", function () {
         }).then(done);
     });
 
+
+    it("should be able to filter stream", function (done) {
+        var merger = cdb.merge()
+        merger.addStream("javascript_test", "testdevice", "mystream")
+                .betweenIndex(0, 1)
+                .transform("3 | sum")
+
+        merger.run()
+        .then(function (result) {
+            console.log(result);
+            expect(result[0].d).toBe(3);
+        }).catch(function (error) {
+            console.log(error);
+            expect(error).toBeUndefined();
+        }).then(done);
+    });
+
     it("should be able to delete stream", function (done) {
         cdb.deleteStream("javascript_test", "testdevice","mystream").then(function (result) {
             expect(result).toBe("ok");
@@ -174,4 +191,5 @@ describe("ConnectorDB admin user", function () {
             expect(error).toBeUndefined();
         }).then(done);
     });
+
 });
