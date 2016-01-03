@@ -8,6 +8,7 @@ describe("ConnectorDB admin user", function () {
         cdb.readUser("test").then(function (result) {
             expect(result.admin).toBe(true);
         }).catch(function (error) {
+            console.log(error);
             expect(error).toBeUndefined();
         }).then(done)
     });
@@ -58,9 +59,16 @@ describe("ConnectorDB admin user", function () {
 
     it("should be able to list devices", function (done) {
         cdb.listDevices("javascript_test").then(function (result) {
-            expect(result.length).toBe(2);
-            expect(result[0].name).toBe("user");
-            expect(result[1].name).toBe("testdevice");
+            expect(result.length).toBe(3);
+            var output = new Set();
+            result.forEach(function(element){
+                output.add(element.name);
+            });
+
+            var expected = new Set(["user", "meta", "testdevice"]);
+            expect(output).toEqual(expected);
+            /**expect(result[0].name).toBe("user");
+            expect(result[1].name).toBe("testdevice");**/
         }).catch(function (error) {
             expect(error).toBeUndefined();
         }).then(done);
@@ -86,7 +94,7 @@ describe("ConnectorDB admin user", function () {
 
     it("should be able to read stream", function (done) {
         cdb.readStream("javascript_test", "testdevice", "mystream").then(function (result) {
-            expect(result.downlink).toBeUndefined();
+            expect(result.downlink).toBe(false);
             expect(result.name).toBe("mystream")
         }).catch(function (error) {
             expect(error).toBeUndefined();
@@ -143,6 +151,23 @@ describe("ConnectorDB admin user", function () {
         }).then(done);
     });
 
+
+    it("should be able to filter stream", function (done) {
+        var merger = cdb.merge()
+        merger.addStream("javascript_test", "testdevice", "mystream")
+                .betweenIndex(0, 1)
+                .transform("3 | sum")
+
+        merger.run()
+        .then(function (result) {
+            console.log(result);
+            expect(result[0].d).toBe(3);
+        }).catch(function (error) {
+            console.log(error);
+            expect(error).toBeUndefined();
+        }).then(done);
+    });
+
     it("should be able to delete stream", function (done) {
         cdb.deleteStream("javascript_test", "testdevice","mystream").then(function (result) {
             expect(result).toBe("ok");
@@ -166,4 +191,5 @@ describe("ConnectorDB admin user", function () {
             expect(error).toBeUndefined();
         }).then(done);
     });
+
 });
