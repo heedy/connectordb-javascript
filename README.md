@@ -1,4 +1,4 @@
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/connectordb/connectordb-javascript/blob/master/LICENSE) [![npm version](https://badge.fury.io/js/connectordb.svg)](https://badge.fury.io/js/connectordb)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/connectordb/connectordb-javascript/blob/master/LICENSE) [![bitHound Overall Score](https://www.bithound.io/github/connectordb/connectordb-javascript/badges/score.svg)](https://www.bithound.io/github/connectordb/connectordb-javascript) [![bitHound Code](https://www.bithound.io/github/connectordb/connectordb-javascript/badges/code.svg)](https://www.bithound.io/github/connectordb/connectordb-javascript) [![npm version](https://badge.fury.io/js/connectordb.svg)](https://badge.fury.io/js/connectordb)
 
 # ConnectorDB Javascript Client
 This is the official javascript client for ConnectorDB. It is compatible with node, react-native, and the browser.
