@@ -138,7 +138,7 @@ export class ConnectorDB {
   // Creates a device on the connectordb instance for the given user.
   createDevice(username, devicename) {
     var path = this._getPath(username, devicename)
-    return this._doRequest(path, "POST");
+    return this._doRequest(path, "POST", {});
   }
 
   // Reads a device from the connectordb server if it exists.
@@ -168,7 +168,9 @@ export class ConnectorDB {
 
   createStream(username, devicename, streamname, schema) {
     var path = this._getPath(username, devicename, streamname)
-    return this._doRequest(path, "POST", schema);
+    return this._doRequest(path, "POST", {
+      "schema": JSON.stringify(schema)
+    });
   }
 
   readStream(username, devicename, streamname) {

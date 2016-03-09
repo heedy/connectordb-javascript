@@ -1,0 +1,17 @@
+language: node_js
+
+
+install:
+    - wget -O cdb.tar.gz https://connectordb.com/www/connectordb0.3.0a1.tar.gz
+    - tar xvzf cdb.tar.gz
+    - export PATH=$TRAVIS_BUILD_DIR/bin:$PATH
+
+before_script:
+    - connectordb create testdb --test
+    - connectordb start testdb
+    - connectordb -l=ERROR run testdb &
+
+script:
+    - npm install
+    - npm script build
+    - npm script check

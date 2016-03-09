@@ -1,4 +1,6 @@
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/connectordb/connectordb-javascript/blob/master/LICENSE) [![bitHound Overall Score](https://www.bithound.io/github/connectordb/connectordb-javascript/badges/score.svg)](https://www.bithound.io/github/connectordb/connectordb-javascript) [![bitHound Code](https://www.bithound.io/github/connectordb/connectordb-javascript/badges/code.svg)](https://www.bithound.io/github/connectordb/connectordb-javascript) [![npm version](https://badge.fury.io/js/connectordb.svg)](https://badge.fury.io/js/connectordb)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/connectordb/connectordb-javascript/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/connectordb/connectordb-javascript.svg?branch=master)](https://travis-ci.org/connectordb/connectordb-javascript)
+[![bitHound Code](https://www.bithound.io/github/connectordb/connectordb-javascript/badges/code.svg)](https://www.bithound.io/github/connectordb/connectordb-javascript) [![npm version](https://badge.fury.io/js/connectordb.svg)](https://badge.fury.io/js/connectordb)
 
 # ConnectorDB Javascript Client
 This is the official javascript client for ConnectorDB. It is compatible with node, react-native, and the browser.
@@ -19,13 +21,13 @@ You can download one of the releases (release tabs).
 git clone https://github.com/connectordb/connectordb-javascript
 cd connectordb-javascript
 npm install
-npm script build
+npm run build
 ```
 
 You can run node tests with:
 
 ```
-npm script check
+npm run check
 ```
 
 If making modifications, you can make sure your modifications work in the browser by using `browsertest.html`
