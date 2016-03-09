@@ -1,10 +1,10 @@
 {
   "name": "connectordb",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ConnectorDB javascript client",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
-  "author": "ConnectorDB <support@connectordb.com> (https://connectordb.com)",
+  "author": "ConnectorDB <support@connectordb.com> (https://connectordb.github.io)",
   "files": [
     "dist",
     "lib",
@@ -20,16 +20,13 @@
     "build:lib": "babel src --out-dir lib",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min"
   },
-  "contributors": [
-    {
-      "name": "Daniel Kumor",
-      "email": "daniel@dkumor.com"
-    },
-    {
-      "name": "Joseph Lewis",
-      "email": "joseph@josephlewis.net"
-    }
-  ],
+  "contributors": [{
+    "name": "Daniel Kumor",
+    "email": "daniel@dkumor.com"
+  }, {
+    "name": "Joseph Lewis",
+    "email": "joseph@josephlewis.net"
+  }],
   "repository": {
     "type": "git",
     "url": "https://github.com/connectordb/connectordb-javascript"
@@ -40,7 +37,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "babel": "^6.3.26",
+    "babel-cli": "^6.3.26",
     "babel-preset-es2015": "^6.3.13",
     "babel-register": "^6.4.3",
     "chai": "^3.5.0",
