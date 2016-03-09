@@ -1,5 +1,7 @@
 language: node_js
 
+node_js:
+    - "4.1"
 
 install:
     - wget -O cdb.tar.gz https://connectordb.com/www/connectordb0.3.0a1.tar.gz
