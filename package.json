@@ -20,27 +20,32 @@
     "build:lib": "babel src --out-dir lib",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min"
   },
-  "contributors": [{
-    "name": "Daniel Kumor",
-    "email": "daniel@dkumor.com"
-  }, {
-    "name": "Joseph Lewis",
-    "email": "joseph@josephlewis.net"
-  }],
+  "contributors": [
+    {
+      "name": "Daniel Kumor",
+      "email": "daniel@dkumor.com"
+    },
+    {
+      "name": "Joseph Lewis",
+      "email": "joseph@josephlewis.net"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/connectordb/connectordb-javascript"
   },
-  "homepage": "https://github.com/connectordb/connectordb-javascript",
+  "homepage": "https://connectordb.github.io",
   "bugs": {
     "url": "https://github.com/connectordb/connectordb-javascript/issues"
   },
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.3.26",
+    "babel-eslint": "^5.0.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-register": "^6.4.3",
     "chai": "^3.5.0",
+    "cross-env": "^1.0.7",
     "eslint": "^1.10.3",
     "mocha": "^2.2.5",
     "rimraf": "^2.3.4",
