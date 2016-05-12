@@ -7,7 +7,9 @@ Licensed under the MIT license.
 **/
 
 // babel-polyfill allows polyfills for es6 elements in browsers
-import "babel-polyfill";
+// This makes the js huge, so should not be used unless you're having a really bad day,
+// and need old browser support
+// import "babel-polyfill";
 
 // Allows using fetch syntax (react-native and chrome for now)
 fetch = typeof(fetch) == 'undefined' ? require("isomorphic-fetch") : fetch;

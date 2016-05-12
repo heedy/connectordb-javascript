@@ -55,7 +55,6 @@
     "webpack": "^1.9.6"
   },
   "dependencies": {
-    "babel-polyfill": "^6.3.14",
     "isomorphic-fetch": "^2.2.1"
   }
 }
