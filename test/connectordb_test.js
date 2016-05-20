@@ -19,7 +19,7 @@ describe("ConnectorDB admin user", function() {
   });
 
   it("should be able to create user", function() {
-    return cdb.createUser("javascript_test", "javacript@localhost", "mypass")
+    return cdb.createUser({name: "javascript_test", email: "javacript@localhost", password: "mypass",role: "user","public": true})
       .then(function(result) {
         expect(result.name)
           .to.equal("javascript_test");
@@ -47,7 +47,7 @@ describe("ConnectorDB admin user", function() {
 
 
   it("should be able to create device", function() {
-    return cdb.createDevice("javascript_test", "testdevice")
+    return cdb.createDevice("javascript_test", {name: "testdevice"})
       .then(function(result) {
         expect(result.name)
           .to.equal("testdevice");
@@ -91,9 +91,9 @@ describe("ConnectorDB admin user", function() {
   });
 
   it("should be able to create stream", function() {
-    return cdb.createStream("javascript_test", "testdevice", "mystream", {
+    return cdb.createStream("javascript_test", "testdevice", {name: "mystream",schema: JSON.stringify({
         "type": "boolean"
-      })
+      })})
       .then(function(result) {
         expect(result.name)
           .to.equal("mystream");
@@ -101,7 +101,7 @@ describe("ConnectorDB admin user", function() {
   });
 
   it("should be able to update stream", function() {
-    return cdb.updateStream("javascript_test", "testdevice", "mystream", {
+    return cdb.updateStream("javascript_test", "testdevice","mystream", {
         "downlink": true
       })
       .then(function(result) {
