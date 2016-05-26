@@ -12,7 +12,9 @@ Licensed under the MIT license.
 // import "babel-polyfill";
 
 // Allows using fetch syntax (react-native and chrome for now)
-fetch = typeof(fetch) == 'undefined' ? require("isomorphic-fetch") : fetch;
+fetch = typeof(fetch) == 'undefined'
+  ? require("isomorphic-fetch")
+  : fetch;
 
 // The default ConnectorDB URL
 const CONNECTORDB_URL = "https://connectordb.com";
@@ -29,11 +31,9 @@ export class ConnectorDB {
       this.authHeader = ""
     } else if (password === undefined) {
       // We log in with apikey
-      this.authHeader = "Basic " + (new Buffer(":" + username_or_apikey))
-        .toString('base64');
+      this.authHeader = "Basic " + (new Buffer(":" + username_or_apikey)).toString('base64');
     } else {
-      this.authHeader = "Basic " + (new Buffer(username_or_apikey + ":" + password))
-        .toString('base64');
+      this.authHeader = "Basic " + (new Buffer(username_or_apikey + ":" + password)).toString('base64');
     }
   }
 
@@ -66,21 +66,19 @@ export class ConnectorDB {
       requestOptions.body = JSON.stringify(object);
     }
 
-    return fetch(url, requestOptions)
-      .then(function(response) {
-        return response.text();
-      })
-      .then(function(result) {
-        let res
-        try {
-          return JSON.parse(result);
-        } catch (err) {
-          return result;
-        }
-        if (res.hasOwnProperty("code")) {
-          throw Error(res.msg + "(" + res.ref + ")");
-        }
-      });
+    return fetch(url, requestOptions).then(function(response) {
+      return response.text();
+    }).then(function(result) {
+      let res
+      try {
+        return JSON.parse(result);
+      } catch (err) {
+        return result;
+      }
+      if (res.hasOwnProperty("code")) {
+        throw Error(res.msg + "(" + res.ref + ")");
+      }
+    });
   }
 
   // Returns a connectordb path for the given user, dev, and stream
@@ -104,9 +102,8 @@ export class ConnectorDB {
   // Creates a new user
   createUser(user) {
     var path = this._getPath(user.name)
-    return this._doRequest(path, "POST",user);
+    return this._doRequest(path, "POST", user);
   }
-
 
   // Reads an existing user
   readUser(username) {
@@ -185,11 +182,12 @@ export class ConnectorDB {
 
   //Insert a single datapoint into the stream
   insertStream(username, devicename, streamname, data) {
-    var datapoints = [{
-      t: (new Date)
-        .getTime() * 0.001,
-      d: data
-    }]
+    var datapoints = [
+      {
+        t: (new Date).getTime() * 0.001,
+        d: data
+      }
+    ]
     var path = this._getPath(username, devicename, streamname)
     return this._doRequest(path + "/data", "PUT", datapoints);
   }
@@ -197,23 +195,28 @@ export class ConnectorDB {
   //Get length of stream
   lengthStream(username, devicename, streamname) {
     var path = this._getPath(username, devicename, streamname) + "/data?q=length"
-    return this._doRequest(path, "GET")
-      .then(function(result) {
-        return parseInt(result);
-      });
+    return this._doRequest(path, "GET").then(function(result) {
+      return parseInt(result);
+    });
   }
 
   //Query by index range [i1,i2)
-  indexStream(username, devicename, streamname, i1, i2) {
+  indexStream(username, devicename, streamname, i1, i2, transform) {
     var path = this._getPath(username, devicename, streamname) + "/data?i1=" + i1 + "&i2=" + i2;
+    if (transform !== undefined) {
+      path = path + "&transform=" + transform;
+    }
     return this._doRequest(path, "GET");
   }
 
   //Query by time range [t1,t2) with a limited number of datapoints.
   //Current time is (new Date).getTime() * 0.001
-  timeStream(username, devicename, streamname, t1, t2, limit) {
+  timeStream(username, devicename, streamname, t1, t2, limit, transform) {
     limit = limit || 0;
     var path = this._getPath(username, devicename, streamname) + "/data?t1=" + t1 + "&t2=" + t2 + "&limit=" + limit;
+    if (transform !== undefined) {
+      path = path + "&transform=" + transform;
+    }
     return this._doRequest(path, "GET");
   }
 
@@ -318,9 +321,6 @@ class StreamQuery {
     return this;
   }
 }
-
-
-
 
 /**
 
