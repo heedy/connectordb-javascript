@@ -204,7 +204,7 @@ export class ConnectorDB {
   indexStream(username, devicename, streamname, i1, i2, transform) {
     var path = this._getPath(username, devicename, streamname) + "/data?i1=" + i1 + "&i2=" + i2;
     if (transform !== undefined) {
-      path = path + "&transform=" + transform;
+      path = path + "&transform=" + encodeURIComponent(transform);
     }
     return this._doRequest(path, "GET");
   }
@@ -215,7 +215,7 @@ export class ConnectorDB {
     limit = limit || 0;
     var path = this._getPath(username, devicename, streamname) + "/data?t1=" + t1 + "&t2=" + t2 + "&limit=" + limit;
     if (transform !== undefined) {
-      path = path + "&transform=" + transform;
+      path = path + "&transform=" + encodeURIComponent(transform);
     }
     return this._doRequest(path, "GET");
   }
