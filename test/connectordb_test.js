@@ -133,7 +133,8 @@ describe("ConnectorDB admin user", function() {
           .to.equal("mystream");
       });
   });
-
+    
+/* The permissions here were changed - admin can no longer write devices that don't belong to it
   it("should be able to insert into stream", function() {
     return cdb.insertStream("javascript_test", "testdevice", "mystream", true)
       .then(function(result) {
@@ -147,7 +148,7 @@ describe("ConnectorDB admin user", function() {
     return cdb.lengthStream("javascript_test", "testdevice", "mystream")
       .then(function(result) {
         expect(result)
-          .to.equal(2);
+          .to.equal(2); // Changed from 2 to 0
       });
   });
 
@@ -198,7 +199,7 @@ describe("ConnectorDB admin user", function() {
         expect(result[0].d)
           .to.equal(3);
       })
-  });
+  });*/
 
   it("should be able to delete stream", function() {
     return cdb.deleteStream("javascript_test", "testdevice", "mystream")
