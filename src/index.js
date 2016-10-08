@@ -180,14 +180,19 @@ export class ConnectorDB {
     return this._doRequest(path, "DELETE");
   }
 
-  //Insert a single datapoint into the stream
-  insertStream(username, devicename, streamname, data) {
+  //Insert a single datapoint into the stream at current time
+  insertNow(username, devicename, streamname, data) {
     var datapoints = [
       {
         t: (new Date).getTime() * 0.001,
         d: data
       }
-    ]
+    ];
+    return insertStream(username, devicename, streamname, datapoints);
+  }
+
+  // Insert the given array of datapoints into the stream
+  insertStream(username, devicename, streamname, datapoints) {
     var path = this._getPath(username, devicename, streamname)
     return this._doRequest(path + "/data", "PUT", datapoints);
   }
