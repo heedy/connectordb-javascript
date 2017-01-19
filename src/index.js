@@ -12,7 +12,7 @@ Licensed under the MIT license.
 // import "babel-polyfill";
 
 // Allows using fetch syntax (react-native and chrome for now)
-fetch = typeof(fetch) == 'undefined'
+fetch = typeof (fetch) == 'undefined'
   ? require("isomorphic-fetch")
   : fetch;
 
@@ -66,9 +66,9 @@ export class ConnectorDB {
       requestOptions.body = JSON.stringify(object);
     }
 
-    return fetch(url, requestOptions).then(function(response) {
+    return fetch(url, requestOptions).then(function (response) {
       return response.text();
-    }).then(function(result) {
+    }).then(function (result) {
       let res
       try {
         return JSON.parse(result);
@@ -160,6 +160,12 @@ export class ConnectorDB {
     return this._doRequest(path, "GET");
   }
 
+  // Gets all of the streams for the specific user subject to the given constraints
+  listUserStreams(username, datatype = "*", publiconly = false, downlinkonly = false, visibleonly = true) {
+    var path = this._getPath(username) + "?q=streams&public=" + publiconly.toString() + "&downlink=" + downlinkonly.toString() + "&visible=" + visibleonly.toString() + "&datatype=" + encodeURIComponent(datatype);
+    return this._doRequest(path, "GET");
+  }
+
   createStream(username, devicename, stream) {
     var path = this._getPath(username, devicename, stream.name)
     return this._doRequest(path, "POST", stream);
@@ -200,7 +206,7 @@ export class ConnectorDB {
   //Get length of stream
   lengthStream(username, devicename, streamname) {
     var path = this._getPath(username, devicename, streamname) + "/data?q=length"
-    return this._doRequest(path, "GET").then(function(result) {
+    return this._doRequest(path, "GET").then(function (result) {
       return parseInt(result);
     });
   }
@@ -239,6 +245,8 @@ export class ConnectorDB {
 
     return new Merge(this);
   }
+
+
 
 }
 

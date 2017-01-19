@@ -1,6 +1,6 @@
 {
   "name": "connectordb",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "ConnectorDB javascript client",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
