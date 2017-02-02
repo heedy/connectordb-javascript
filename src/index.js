@@ -194,7 +194,7 @@ export class ConnectorDB {
         d: data
       }
     ];
-    return insertStream(username, devicename, streamname, datapoints);
+    return this.insertStream(username, devicename, streamname, datapoints);
   }
 
   // Insert the given array of datapoints into the stream
