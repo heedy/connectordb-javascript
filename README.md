@@ -29,7 +29,6 @@ You can run node tests by running connectordb in test mode:
 ```bash
 connectordb create testdb --test
 connectordb start testdb
-connectordb run testdb &
 
 npm run check
 ```
