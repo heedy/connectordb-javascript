@@ -7,7 +7,7 @@ describe("ConnectorDB admin user", function () {
   var cdb;
   beforeEach(function () {
     // If you want to change the url, make sure allowcrossorigin is true in connectordb config
-    cdb = new connectordb.ConnectorDB("test", "test", "http://localhost:8000");
+    cdb = new connectordb.ConnectorDB("test", "test", "http://localhost:3124");
   });
 
   it("should be able to read user", function () {
