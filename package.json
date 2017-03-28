@@ -4,6 +4,7 @@
   "description": "ConnectorDB javascript client",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
+  "license": "Apache-2.0",
   "author": "ConnectorDB <support@connectordb.com> (https://connectordb.github.io)",
   "files": [
     "dist",
